@@ -1,5 +1,6 @@
 package com.tecsup.app.micro.product.client;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,25 +17,29 @@ public class UserClient {
     @Value("${user.service.url}")
     private String userServiceUrl;
 
-    public User getUserById(Long createdBy){
+    @CircuitBreaker(name = "userService", fallbackMethod = "getUserByIdFallback")
+    public User getUserById(Long createdBy) {
 
-        String Url=userServiceUrl+"/api/users/"+createdBy;
+        String Url = userServiceUrl + "/api/users/" + createdBy;
 
-        try{
-            User user =restTemplate.getForObject(Url,User.class);
-            log.info("User retrived successfully from userdb:{}",user);
+        try {
+            User user = restTemplate.getForObject(Url, User.class);
+            log.info("User retrived successfully from userdb:{}", user);
             return user;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info("Error Calling  User Service :{ }", e.getMessage());
-            throw new RuntimeException("Error Calling  User Service"+e.getMessage());
+            throw new RuntimeException("Error Calling  User Service" + e.getMessage());
         }
 
-
-
-
-//        return  User.builder()
-//                .name("Jhon Deep")
-//                .build();
+    }
+    private User getUserByIdFallback(Long createdBy,Throwable throwable){
+            log.warn("Fallback method invoked for getUserById due to {}",throwable.getMessage());
+                return  User.builder()
+                        .name("unknown user")
+                        .email("unknown email")
+                        .phone("unknown phone")
+                        .address("unknown adrress")
+                        .build();
     }
 
 }

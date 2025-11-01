@@ -1,10 +1,13 @@
 package com.tecsup.order_service.client;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class ProductClient {
     @Value("${product.service.url}")
     private String productServiceUrl;
 
+    @CircuitBreaker(name = "productService", fallbackMethod = "getProductByIdFallback")
     public Product getProductById(Long idProduct) {
         String Url = productServiceUrl + "/api/products/" + idProduct;
         try {
@@ -28,4 +32,13 @@ public class ProductClient {
             throw new RuntimeException("Error Calling  Product Service" + e.getMessage());
         }
     }
+
+    private Product getProductByIdFallback(Long idProduct,Throwable throwable){
+        log.warn("Fallback method invoked for getUserById due to {}",throwable.getMessage());
+        return  Product.builder()
+                .name("unknown name")
+                .price(BigDecimal.ZERO)
+                .build();
+    }
+
 }

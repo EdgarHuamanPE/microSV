@@ -100,6 +100,19 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--Spring Actuador-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!--circuit breaker-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
+
 	</dependencies>
 
     <!-- Spring Cloud Dependencies -->

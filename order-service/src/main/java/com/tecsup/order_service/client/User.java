@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class User {
+
     private Long id;
     @JsonAlias("name")
     @JsonProperty("username")
