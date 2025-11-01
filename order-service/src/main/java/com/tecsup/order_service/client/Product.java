@@ -1,19 +1,20 @@
-package com.tecsup.app.micro.product.client;
+package com.tecsup.order_service.client;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Builder
-public class User {
+public class Product {
     private Long id;
     private String name;
-    private String email;
-    private String phone;
-    private String address;
+    private BigDecimal price;
 
 }

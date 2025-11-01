@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
+		<version>3.5.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.tecsup.app.micro</groupId>
-	<artifactId>user-service</artifactId>
+	<groupId>com.tecsup</groupId>
+	<artifactId>order-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>user-service</name>
+	<name>order-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -28,13 +28,17 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-        <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -70,11 +74,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
-        </dependency>
 
         <!-- Spring Cloud Config Client -->
         <dependency>
@@ -88,8 +87,20 @@
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
 
+        <!--mapstruct-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-    </dependencies>
+	</dependencies>
 
     <!-- Spring Cloud Dependencies -->
     <dependencyManagement>
@@ -105,7 +116,6 @@
     </dependencyManagement>
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -115,11 +125,6 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</path>
-                        <!--<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
-						</path>-->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
@@ -140,11 +145,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:5432/userdb</url>
+                    <url>jdbc:postgresql://localhost:5434/orderdb</url>
                     <user>postgres</user>
                     <password>postgres</password>
                     <schemas>
@@ -152,10 +158,7 @@
                     </schemas>
                 </configuration>
             </plugin>
-
-
 		</plugins>
 	</build>
 
 </project>
-s
